@@ -31,11 +31,12 @@ class Tail:
 
 class Slack:
 
-    def __init__(self, webhook, proxy=None, channel=None, timeout=5):
+    def __init__(self, webhook, proxy=None, channel=None, username=None, timeout=5):
         self.url = webhook
         self.proxy = proxy
         self.timeout = timeout
         self.channel = channel
+        self.username = username
 
     def send(self, lines):
         """ Send line to Slack """
@@ -43,6 +44,8 @@ class Slack:
         payload = {'text': '```{}```'.format(lines)}
         if self.channel:
             payload['channel'] = self.channel
+        if self.username:
+            payload['username'] = self.username
         if self.proxy:
             proxies = {'https': self.proxy}
         else:
@@ -67,6 +70,10 @@ if __name__ == '__main__':
                         '-c',
                         metavar='NAME',
                         help='Override configured channel. NAME can be a #channel or a @user.')
+    parser.add_argument('--username',
+                        '-U',
+                        metavar='NAME',
+                        help='Set the username to use for the webhook. The default is to use the filename.')
     parser.add_argument('--file',
                         '-f',
                         metavar='NAME',
@@ -115,7 +122,12 @@ if __name__ == '__main__':
         print("Can't open {}: {}".format(args.file, sys.exc_info()[1]), file=sys.stderr)
         sys.exit(1)
 
-    slack = Slack(webhook=args.url, channel=args.channel, proxy=args.proxy)
+    if args.username:
+        username = args.username
+    else:
+        username = args.file.split('/')[-1]
+
+    slack = Slack(webhook=args.url, channel=args.channel, username=username, proxy=args.proxy)
     try:
         slack.send('Tailing {} every {} seconds. Max size {} bytes'.format(args.file, args.wait, args.truncate))
     except:
