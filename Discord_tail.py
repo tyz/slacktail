@@ -13,21 +13,19 @@ import asyncio
 
 client = discord.Client()
 
-async def my_background_task(channelID, filename, time, truncate):
+async def my_background_task(channelID, filename, time):
     await client.wait_until_ready()
     channel = discord.Object(id=channelID)
     file = open(filename, 'r')
     file.seek(0, os.SEEK_END)
     print('------')
-    print('Tailing {} every {} seconds. Max size {} bytes.'.format(filename, time, truncate))
+    print('Tailing {} every {} seconds.'.format(filename, time))
     
     while not client.is_closed:
         lines = file.readlines()
         file.seek(0, os.SEEK_END)     # Reset EOF flag by seeking to current position
         if lines != []:    # Not EOF
             output = ''.join(lines)
-            if len(output) > truncate:
-                output = '.....' + output[-truncate:]
             await client.send_message(channel, output)
         await asyncio.sleep(time)
 
@@ -59,14 +57,8 @@ parser.add_argument('--wait',
                     type=int,
                     help='Try to read new lines every SEC seconds. (default: 60)',
                     default=60)
-parser.add_argument('--truncate',
-                    '-T',
-                    metavar='SIZE',
-                    type=int,
-                    help='Limit the size of every message to SIZE bytes. The oldest lines will be removed first. (default: 4096)',
-                    default=4096)
 
 args = parser.parse_args()
 
-client.loop.create_task(my_background_task(args.channel, args.file, args.wait, args.truncate))
+client.loop.create_task(my_background_task(args.channel, args.file, args.wait))
 client.run(args.token)

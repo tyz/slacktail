@@ -11,7 +11,7 @@ discord.py - https://github.com/Rapptz/discord.py
 
 ```
 usage: Discord_tail.py [-h] --token TOKEN --channel CHANNEL --file FILE
-                       [--wait SEC] [--truncate SIZE]
+                       [--wait SEC]
 
 Tail a file and output as a Discord bot to a Discord channel.
 
@@ -23,7 +23,4 @@ optional arguments:
                         Discord channel to output to.
   --file FILE, -f FILE  The file to tail.
   --wait SEC, -W SEC    Try to read new lines every SEC seconds. (default: 60)
-  --truncate SIZE, -T SIZE
-                        Limit the size of every message to SIZE bytes. The
-                        oldest lines will be removed first. (default: 4096)
 ```
