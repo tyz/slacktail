@@ -14,38 +14,42 @@ import re
 
 client = discord.Client()
 
-async def prepend_dont_starve_emoticon(line):
+def prepend_dont_starve_emoticon(line):
     # Join
     if re.match(r'\[(\d+):(\d+):(\d+)\]: \[Join Announcement\] (.+)$', line):
-        return ":tada: :tada:" + line
+        return ":tada: :tada: " + line
     
     # Leave
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Leave Announcement\] (.+)$', line):
-        return ":warning: :warning:" + line
+        return ":warning: :warning: " + line
     
     # Say
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Say\] \(.+\) (.+): (.+)$', line):
-        return ":speech_balloon: :speech_balloon:" + line
+        return ":speech_balloon: :speech_balloon: " + line
     
     # Whisper
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Whisper\] \(.+\) (.+): (.+)$', line):
-        return ":envelope: :envelope:" + line
+        return ":envelope: :envelope: " + line
     
     # Death
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Death Announcement\] (.+) was killed by (.+)\.', line):
-        return ":dead: :dead:" + line
+        return ":dead: :dead: " + line
     
     # Resurrect
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Resurrect Announcement\] (.+) was resurrected by (.+)\.$', line):
-        return ":heart: :heart:" + line
+        return ":heart: :heart: " + line
     
     # Skin
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Skin Announcement\] (.+)$', line):
-        return ":gift: :gift:" + line
+        return ":gift: :gift: " + line
     
     # Roll
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Roll Announcement\] \(.+\) (.+) (.+)$', line):
-        return ":game_die: :game_die:" + line
+        return ":game_die: :game_die: " + line
+    
+    # Announcement
+    elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Announcement\] (.+)$', line):
+        return "" + line
     
     # No match found
     else:
