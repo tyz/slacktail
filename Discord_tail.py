@@ -11,7 +11,6 @@ import os
 import discord
 import asyncio
 import re
-import sys
 
 client = discord.Client()
 
@@ -71,7 +70,7 @@ async def my_background_task(channelID, filename, time):
     try:
         file = open(filename, 'r', encoding='utf-8')
     except IOError:
-        sys.exit("There was a problem opening \"{}\", aborting.".format(filename))
+        print("There was a problem opening \"{}\", aborting.".format(filename))
     
     file.seek(0, os.SEEK_END)
     print("------")
@@ -128,4 +127,4 @@ client.loop.create_task(my_background_task(args.channel, args.file, args.wait))
 try:
     client.run(args.token)
 except LoginFailure:
-    sys.exit("Couldn't login with token \"{}\", aborting.".format(args.token))
+    print("Couldn't login with token \"{}\", aborting.".format(args.token))
