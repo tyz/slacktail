@@ -11,6 +11,7 @@ import os
 import discord
 import asyncio
 import re
+import sys
 
 client = discord.Client()
 
@@ -70,7 +71,7 @@ async def my_background_task(channelID, filename, time):
     try:
         file = open(filename, 'r', encoding='utf-8')
     except IOError:
-        print("FATAL ERROR: There was a problem opening \"{}\".".format(filename))
+        sys.exit("FATAL ERROR: There was a problem opening \"{}\".".format(filename))
     
     file.seek(0, os.SEEK_END)
     print("------")
@@ -86,7 +87,7 @@ async def my_background_task(channelID, filename, time):
                 line = prepend_dont_starve_emoticon(line)    # This line can be removed if you want `line` as is
                 try:
                     await client.send_message(channel, line)
-                except DiscordException as e:    # For full list of exceptions https://github.com/Rapptz/discord.py/blob/async/discord/errors.py
+                except discord.DiscordException as e:    # For full list of exceptions https://github.com/Rapptz/discord.py/blob/async/discord/errors.py
                     print("There was a problem communicating with Discord.")
                     print("TYPE: {}".format(type(e)))
                     print("ARGS: {}".format(e))
@@ -126,5 +127,5 @@ args = parser.parse_args()
 client.loop.create_task(my_background_task(args.channel, args.file, args.wait))
 try:
     client.run(args.token)
-except LoginFailure:
-    print("FATAL ERROR: Couldn't login with token \"{}\".".format(args.token))
+except discord.LoginFailure:
+    sys.exit("FATAL ERROR: Couldn't login with token \"{}\".".format(args.token))
