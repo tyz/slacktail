@@ -18,7 +18,7 @@ client = discord.Client()
 def prepend_dont_starve_emoticon(line):
     # Join
     if re.match(r'\[(\d+):(\d+):(\d+)\]: \[Join Announcement\] (.+)$', line):
-        return ":balloons: :balloons: " + line
+        return "<:balloons:290486234956955648> <:balloons:290486234956955648> " + line
     
     # Leave
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Leave Announcement\] (.+)$', line):
@@ -34,7 +34,7 @@ def prepend_dont_starve_emoticon(line):
     
     # Death
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Death Announcement\] (.+) was killed by (.+)\.', line):
-        return ":dead: :dead: " + line
+        return "<:dead:290486234957217792> <:dead:290486234957217792> " + line
     
     # Resurrect
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Resurrect Announcement\] (.+) was resurrected by (.+)\.$', line):
@@ -42,7 +42,7 @@ def prepend_dont_starve_emoticon(line):
     
     # Skin
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Skin Announcement\] (.+)$', line):
-        return ":gift-1: :gift-1: " + line
+        return "<:gift:290486235137572864> <:gift:290486235137572864> " + line
     
     # Roll
     elif re.match(r'\[(\d+):(\d+):(\d+)\]: \[Roll Announcement\] \(.+\) (.+) (.+)$', line):
