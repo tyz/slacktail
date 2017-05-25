@@ -15,7 +15,7 @@ import sys
 
 client = discord.Client()
 
-def prepend_dont_starve_emoticon(line):
+def DontStarvePrependEmoji(line):
     # Join
     if re.match(r'\[(\d+):(\d+):(\d+)\]: \[Join Announcement\] (.+)$', line):
         return "<:balloons:290486234956955648> <:balloons:290486234956955648> " + line
@@ -64,6 +64,49 @@ def prepend_dont_starve_emoticon(line):
     else:
         return "" + line
 
+def DontStarveReactionFilter(line):
+    line = line.lower()
+    
+    # Deerclops
+    if "deerclop" in line:
+        return None
+    
+    # Moose Goose
+    elif "moose" in line or "goose" in line:
+        return None
+    
+    # Mossling
+    elif "mossling" in line:
+        return None
+    
+    # Bearger
+    elif "bearger" in line:
+        return None
+    
+    # Dragonfly
+    elif "dragonfly" in line or "dfly" in line:
+        return None
+    
+    # Ancient Guardian
+    elif "guardian" in line:
+        return None
+    
+    # Klaus
+    elif "klaus" in line:
+        return None
+    
+    # Bee Queen
+    elif "bee queen" in line:
+        return None
+    
+    # Toadstool
+    elif "toad" in line:
+        return None
+    
+    # No match found
+    else:
+        return None
+
 async def my_background_task(channelID, filename, time):
     await client.wait_until_ready()
     channel = discord.Object(id=channelID)
@@ -84,17 +127,33 @@ async def my_background_task(channelID, filename, time):
             print("Encountered unknown character in server log, skipping lines.")
         else:
             for line in lines:    # Not EOF
-                line = prepend_dont_starve_emoticon(line)    # This line can be removed if you want `line` as is
+                message_line = DontStarvePrependEmoji(line)
+                
                 try:
-                    message = await client.send_message(channel, line)
+                    message = await client.send_message(channel, message_line)
                 except discord.Forbidden:
                     print("FORBIDDEN EXCEPTION (403): Bot doesn't have permissions to send message.")
                 except discord.NotFound:
                     print("NOT FOUND EXCEPTION (404): Couldn't find channel with ID \"{}\", message not sent.".format(channelID))
                 except discord.HTTPException:
-                    print("HTTP EXCEPTION: HTTP request failed, couldn't send message to Discord.")
+                    print("HTTP EXCEPTION: HTTP request failed, couldn't send message.")
                 except discord.InvalidArgument:
-                    print("INVALID ARGUMENT EXCEPTION: Destination parameter invalid, couldn't send message to Discord.")
+                    print("INVALID ARGUMENT EXCEPTION: Destination parameter invalid, couldn't send message.")
+                else:
+                    reaction = DontStarveReactionFilter(line)
+                    if reaction is None:
+                        continue
+                    
+                    try:
+                        await client.add_reaction(message, reaction)
+                    except discord.Forbidden:
+                        print("FORBIDDEN EXCEPTION (403): Bot doesn't have permissions to add reaction.")
+                    except discord.NotFound:
+                        print("NOT FOUND EXCEPTION (404): Couldn't find message or emoji, reaction not added.")
+                    except discord.HTTPException:
+                        print("HTTP EXCEPTION: HTTP request failed, couldn't add reaction.")
+                    except discord.InvalidArgument:
+                        print("INVALID ARGUMENT EXCEPTION: Message or emoji parameter invalid, couldn't add reaction.")
         
         file.seek(0, os.SEEK_END)    # Reset EOF flag by seeking to current position
         await asyncio.sleep(time)
