@@ -69,39 +69,39 @@ def DontStarveReactionFilter(line):
     
     # Deerclops
     if "deerclop" in line:
-        return None
+        return "<:deerclops:290486755226812416>"
     
     # Moose Goose
     elif "moose" in line or "goose" in line:
-        return None
+        return "<:goose:290486755327475712>"
     
-    # Mossling
-    elif "mossling" in line:
-        return None
+    # Mosling
+    elif "mosling" in line:
+        return "<:mosling:290486757009522694>"
     
     # Bearger
     elif "bearger" in line:
-        return None
+        return "<:bearger:290486754916696064>"
     
     # Dragonfly
     elif "dragonfly" in line or "dfly" in line:
-        return None
+        return "<:dragonfly:290486755319087104>"
     
     # Ancient Guardian
     elif "guardian" in line:
-        return None
+        return "<:guardian:290488044702662656>"
     
     # Klaus
     elif "klaus" in line:
-        return None
+        return "<:klaus:290486755495378944>"
     
     # Bee Queen
     elif "bee queen" in line:
-        return None
+        return "<:bee_queen:290486755088662538>"
     
     # Toadstool
     elif "toad" in line:
-        return None
+        return "<:toadstool:290486761065545728>"
     
     # No match found
     else:
