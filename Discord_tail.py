@@ -86,11 +86,15 @@ async def my_background_task(channelID, filename, time):
             for line in lines:    # Not EOF
                 line = prepend_dont_starve_emoticon(line)    # This line can be removed if you want `line` as is
                 try:
-                    await client.send_message(channel, line)
-                except discord.DiscordException as e:    # For full list of exceptions https://github.com/Rapptz/discord.py/blob/async/discord/errors.py
-                    print("There was a problem communicating with Discord.")
-                    print("TYPE: {}".format(type(e)))
-                    print("ARGS: {}".format(e))
+                    message = await client.send_message(channel, line)
+                except discord.Forbidden:
+                    print("FORBIDDEN EXCEPTION (403): Bot doesn't have permissions to send message.")
+                except discord.NotFound:
+                    print("NOT FOUND EXCEPTION (404): Couldn't find channel with ID \"{}\", message not sent.".format(channelID))
+                except discord.HTTPException:
+                    print("HTTP EXCEPTION: HTTP request failed, couldn't send message to Discord.")
+                except discord.InvalidArgument:
+                    print("INVALID ARGUMENT EXCEPTION: Destination parameter invalid, couldn't send message to Discord.")
         
         file.seek(0, os.SEEK_END)    # Reset EOF flag by seeking to current position
         await asyncio.sleep(time)
@@ -119,7 +123,7 @@ parser.add_argument('--wait',
                     '-W',
                     metavar='SEC',
                     type=int,
-                    help="Try to read new lines every SEC seconds. (default: 60)",
+                    help="Try to read new lines every SEC seconds. (default: 30)",
                     default=30)
 
 args = parser.parse_args()
